@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.25.5",
+    "@clerk/nextjs": "^6.12.12",
     "@deepgram/sdk": "^3.11.3",
     "@react-pdf/renderer": "^4.3.0",
     "deepgram": "^1.0.3",
