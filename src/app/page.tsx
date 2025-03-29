@@ -2,7 +2,7 @@
 "use client"
 
 import { useUser, UserButton } from '@clerk/clerk-react';
-import { SignIn } from "@clerk/nextjs";
+import SignInPage from "./components/SignInPage";
 import { useState } from "react";
 import SelectCompany from "./SelectCompany";
 import DisplayPDF from "./DisplayPDF";
@@ -15,7 +15,7 @@ export default function Home() {
   const [pdfReady, setPdfReady] = useState(false);
 
   if (!user) {
-    return null;
+    return <SignInPage />;
   }
 
   const handleSetSelectedCompany = (companyId: string) => {
