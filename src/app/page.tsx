@@ -1,26 +1,17 @@
 
 "use client"
 
-import { useUser, UserButton } from '@clerk/clerk-react';
 import { SignIn } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 import { useState } from "react";
 import SelectCompany from "./SelectCompany";
 import DisplayPDF from "./DisplayPDF";
 import RefineForm from "./RefineForm";
 
 export default function Home() {
-  const { user } = useUser();
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [pdfReady, setPdfReady] = useState(false);
-
-  if (!user) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <SignIn />
-      </div>
-    );
-  }
 
   const handleSetSelectedCompany = (companyId: string) => {
     console.log("Setting selected company:", companyId);
@@ -40,7 +31,7 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 bg-white">
       <div className="absolute top-4 right-4">
-        <UserButton />
+        <SignIn />
       </div>
       <main className="flex flex-row gap-[32px] row-start-2 items-start sm:items-start w-full">      
         <div className="w-1/2">
