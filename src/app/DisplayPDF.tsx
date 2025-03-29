@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 
-const DisplayPDF = ({ selectedCompany, pdfLoading, pdfReady }: { selectedCompany: string, pdfLoading: boolean, pdfReady: boolean }) => {
+const DisplayPDF = ({
+    selectedCompany,
+    pdfLoading,
+    pdfReady,
+}: {
+    selectedCompany: string;
+    pdfLoading: boolean;
+    pdfReady: boolean;
+}) => {
     const pdfUrl = `/pdfs/${selectedCompany}.pdf`; // Direct URL to the PDF
 
     useEffect(() => {
@@ -11,7 +19,10 @@ const DisplayPDF = ({ selectedCompany, pdfLoading, pdfReady }: { selectedCompany
                 console.log("Fetching PDF from route:", pdfUrl);
                 const response = await fetch(pdfUrl);
                 console.log("Response status:", response.status);
-                console.log("Response type:", response.headers.get("Content-Type"));
+                console.log(
+                    "Response type:",
+                    response.headers.get("Content-Type"),
+                );
 
                 if (!response.ok) {
                     console.log(`Failed to fetch PDF. Retrying...`);
@@ -30,17 +41,17 @@ const DisplayPDF = ({ selectedCompany, pdfLoading, pdfReady }: { selectedCompany
     }, [selectedCompany, pdfLoading, pdfReady]);
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 h-[75vh]">
             {pdfLoading || !pdfReady ? (
                 <div className="flex items-center justify-center p-4">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#ff6d63]"></div>
                 </div>
             ) : (
-                <div className="pdf-container">
+                <div className="pdf-container h-full">
                     <iframe
                         src={pdfUrl} // Use the direct URL here
                         width="100%"
-                        height="600px"
+                        height="100%"
                         title="PDF Viewer"
                         className="border-none"
                     />
