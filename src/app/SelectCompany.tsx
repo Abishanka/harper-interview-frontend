@@ -31,9 +31,13 @@ const SelectCompany = ({
                     },
                 );
                 const data = await response.json();
+                if (!response.ok || Array.isArray(data)) {
+                    throw new Error("Failed to fetch companies");
+                }
                 setCompanies(data);
             } catch (error) {
                 console.error("Error fetching companies:", error);
+                setCompanies([]);
             } finally {
                 setCompanyListLoading(false);
             }
