@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useUser, UserButton } from '@clerk/clerk-react';
+import { useUser, UserButton, useClerk } from '@clerk/clerk-react';
 import SignInPage from "./components/SignInPage";
 import { useState } from "react";
 import SelectCompany from "./SelectCompany";
@@ -35,7 +35,13 @@ export default function Home() {
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 bg-white">
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 flex gap-4 items-center">
+        <button 
+          onClick={() => useClerk().signOut()} 
+          className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+        >
+          Sign Out
+        </button>
         <UserButton />
       </div>
       <main className="flex flex-row gap-[32px] row-start-2 items-start sm:items-start w-full">      
