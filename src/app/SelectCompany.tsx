@@ -25,7 +25,7 @@ const SelectCompany = ({
             setCompanyListLoading(true);
             try {
                 const response = await fetch(
-                    `${BACKEND_URL}api/fetch-company-list`,
+                    `/api/fetch-company-list`, // Changed to relative path
                     {
                         method: "GET",
                     },
