@@ -1,33 +1,44 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
-export default function RefineForm(
-  {selectedCompany, setPdfLoading, pdfReady, setPdfReady}: 
-  {selectedCompany: string, setPdfLoading: (pdfLoading: boolean) => void, pdfReady: boolean, setPdfReady: (pdfReady: boolean) => void}) 
-  {
-
+export default function RefineForm({
+  selectedCompany,
+  setPdfLoading,
+  pdfReady,
+  setPdfReady,
+}: {
+  selectedCompany: string;
+  setPdfLoading: (pdfLoading: boolean) => void;
+  pdfReady: boolean;
+  setPdfReady: (pdfReady: boolean) => void;
+}) {
   const [pdfLoading_, setPdfLoading_] = useState(false);
-  const [customInput, setCustomInput] = useState('');
+  const [customInput, setCustomInput] = useState("");
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const handleRefine = async () => {
     setPdfLoading(true);
     setPdfLoading_(true);
     setPdfReady(false);
     try {
-      const response = await fetch(`http://localhost:8000/api/refine-form?company_id=${selectedCompany}&refine_task=${customInput}`, {
-        method: 'GET',
-      });
+      const response = await fetch(
+        `${BACKEND_URL}api/refine-form?company_id=${selectedCompany}&refine_task=${customInput}`,
+        {
+          method: "GET",
+        },
+      );
       if (!response.ok) {
-        throw new Error('Failed to refine form');
+        throw new Error("Failed to refine form");
       }
       const data = await response.json();
       console.log(data.message);
 
       startPolling();
     } catch (error) {
-      console.error('Error refining form:', error);
+      console.error("Error refining form:", error);
       setPdfLoading(false);
       setPdfLoading_(false);
       setPdfReady(true);
@@ -36,26 +47,26 @@ export default function RefineForm(
 
   const startPolling = async () => {
     const deletePdfs = async () => {
-        try {
-            const response = await fetch('/api/reset-pdf-directory', {
-                method: 'POST',
-            });
-            if (!response.ok) {
-                throw new Error('Failed to reset PDF directory');
-            }
-            console.log('PDF directory reset successfully');
-        } catch (error) {
-            console.error('Error resetting PDF directory:', error);
+      try {
+        const response = await fetch("/api/reset-pdf-directory", {
+          method: "POST",
+        });
+        if (!response.ok) {
+          throw new Error("Failed to reset PDF directory");
         }
+        console.log("PDF directory reset successfully");
+      } catch (error) {
+        console.error("Error resetting PDF directory:", error);
+      }
     };
 
     await deletePdfs();
     const interval = setInterval(async () => {
       try {
-        const statusResponse = await fetch('/api/check-pdf-status', {
-          method: 'POST',
+        const statusResponse = await fetch("/api/check-pdf-status", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ selectedCompany }),
         });
@@ -73,7 +84,7 @@ export default function RefineForm(
         console.error("Error checking refine status:", error);
         clearInterval(interval);
         clearTimeout(timeout);
-        }
+      }
     }, 5000);
 
     const timeout = setTimeout(() => {
@@ -120,16 +131,16 @@ export default function RefineForm(
   const transcribeAudio = async (audioBlob: Blob) => {
     const arrayBuffer = await audioBlob.arrayBuffer();
 
-    const response = await fetch('http://localhost:8000/api/transcribe-audio', {
-      method: 'POST',
+    const response = await fetch(`${BACKEND_URL}api/transcribe-audio`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/octet-stream',
+        "Content-Type": "application/octet-stream",
       },
       body: arrayBuffer,
     });
 
     if (!response.ok) {
-      throw new Error('Failed to transcribe audio');
+      throw new Error("Failed to transcribe audio");
     }
 
     const { transcription } = await response.json();
@@ -149,23 +160,27 @@ export default function RefineForm(
         <button
           className={`px-4 py-2 rounded-md text-white font-medium ${
             pdfLoading_ || !pdfReady
-              ? 'bg-[#ff6d63] cursor-not-allowed opacity-50' 
-              : 'bg-[#ff6d63] hover:bg-[#e55c53] active:bg-[#d44c43]'
+              ? "bg-[#ff6d63] cursor-not-allowed opacity-50"
+              : "bg-[#ff6d63] hover:bg-[#e55c53] active:bg-[#d44c43]"
           }`}
           onClick={handleRefine}
           disabled={pdfLoading_ || !pdfReady}
         >
-          {pdfLoading_ ? 'Loading...' : 'Refine'}
+          {pdfLoading_ ? "Loading..." : "Refine"}
         </button>
         <button
           className="px-4 py-2 rounded-md text-white font-medium bg-[#ff6d63] hover:bg-[#e55c53] active:bg-[#d44c43]"
           onMouseDown={async () => {
             const stopRecording = await handleAudioRecording();
             // Wait for the user to release the mouse button
-            document.addEventListener('mouseup', async () => {
-              const audioBlob = await stopRecording();
-              await transcribeAudio(audioBlob);
-            }, { once: true });
+            document.addEventListener(
+              "mouseup",
+              async () => {
+                const audioBlob = await stopRecording();
+                await transcribeAudio(audioBlob);
+              },
+              { once: true },
+            );
           }}
         >
           🎤
@@ -173,4 +188,4 @@ export default function RefineForm(
       </div>
     </div>
   );
-} 
+}
