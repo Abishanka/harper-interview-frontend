@@ -13,7 +13,9 @@ const SelectCompany = ({
     setPdfLoading: (pdfLoading: boolean) => void;
     setPdfReady: (pdfReady: boolean) => void;
 }) => {
-    const [companies, setCompanies] = useState<Array<{id: string; company_name: string}>>([]);
+    const [companies, setCompanies] = useState<
+        Array<{ id: string; company_name: string }>
+    >([]);
     const [selectedCompany_, setSelectedCompany_] = useState("");
     const [companyListLoading, setCompanyListLoading] = useState(true);
     const [pdfLoading_, setPdfLoading_] = useState(pdfLoading);
@@ -31,7 +33,6 @@ const SelectCompany = ({
                     },
                 );
                 const data = await response.json();
-                console.error(data);
                 if (!response.ok || !Array.isArray(data)) {
                     throw new Error("Failed to fetch companies");
                 }
