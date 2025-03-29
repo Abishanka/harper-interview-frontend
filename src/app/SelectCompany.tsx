@@ -25,22 +25,15 @@ const SelectCompany = ({
             setCompanyListLoading(true);
             try {
                 const response = await fetch(
-                    `/api/fetch-company-list`,
+                    `/api/fetch-company-list`, // Changed to relative path
                     {
                         method: "GET",
                     },
                 );
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
                 const data = await response.json();
-                if (!Array.isArray(data)) {
-                    throw new Error('Expected array of companies from API');
-                }
                 setCompanies(data);
             } catch (error) {
                 console.error("Error fetching companies:", error);
-                setCompanies([]); // Reset to empty array on error
             } finally {
                 setCompanyListLoading(false);
             }
