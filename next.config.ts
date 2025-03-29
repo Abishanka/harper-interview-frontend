@@ -5,14 +5,13 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination:
-          "https://106a3c52-dd77-4008-8678-17b72f2f0177-00-25b6sowovdxnr.worf.replit.dev:8000/api/:path*",
+        destination: "https://harper-interview-service.onrender.com/api/:path*",
       },
     ];
   },
   experimental: {
     allowedDevOrigins: [
-      "http://f32f3e4a-d27e-4055-9b20-02288765e295-00-1ptmmpzgki8xi.kirk.replit.dev", // Add your specific origin here
+      "https://harper-interview-service.onrender.com", // Add your specific origin here
     ],
   },
 };
