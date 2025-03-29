@@ -15,11 +15,7 @@ export default function Home() {
   const [pdfReady, setPdfReady] = useState(false);
 
   if (!user) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <SignIn />
-      </div>
-    );
+    return null;
   }
 
   const handleSetSelectedCompany = (companyId: string) => {
