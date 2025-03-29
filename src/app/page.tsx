@@ -9,6 +9,13 @@ import RefineForm from "./RefineForm";
 
 export default function Home() {
   const { user } = useUser();
+  const clerk = useClerk();
+  
+  const signOut = () => {
+    clerk.signOut().then(() => {
+      window.location.href = "/sign-in";
+    });
+  };
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [pdfReady, setPdfReady] = useState(false);
@@ -37,10 +44,7 @@ export default function Home() {
       <div className="absolute top-4 right-4 flex gap-4 items-center">
         <button
           onClick={() => {
-            const clerk = useClerk();
-            clerk.signOut().then(() => {
-              window.location.href = "/sign-in";
-            });
+            signOut();
           }}
           className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
         >
