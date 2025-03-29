@@ -55,7 +55,7 @@ const SelectCompany = ({
 
         try {
             const response = await fetch(
-                `${BACKEND_URL}api/generate-form?company_id=${selectedCompany_}`,
+                `/api/generate-form?company_id=${selectedCompany_}`,
                 {
                     method: "GET",
                 },
